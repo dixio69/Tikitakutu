@@ -1,0 +1,15 @@
+package com.hehe.tikitakutu.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class CellLocation {
+    private int x;
+    private int y;
+}

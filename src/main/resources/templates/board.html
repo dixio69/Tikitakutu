@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Tikitakutu</title>
+    <!-- Favicon-->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/materialize.css" rel="stylesheet">
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      table td,
+      table th {
+        border: 0px solid #000;
+      }
+      table tr:first-child th {
+        border-top: 0;
+      }
+      table tr:last-child td {
+        border-bottom: 0;
+      }
+      table tr td:first-child,
+      table tr th:first-child {
+        border-left: 0;
+      }
+      table tr td:last-child,
+      table tr th:last-child {
+        border-right: 0;
+      }
+     .button {
+        color: black;
+        text-align: center;
+        font-size: 15px;
+     }
+    </style>
+</head>
+
+<body class="signup-page">
+    <div class="signup-box">
+        <div class="logo">
+            <a href="javascript:void(0);"><b>TIKITAKUTU</b></a>
+            <small>a Tic Tac Toe game</small>
+        </div>
+        <div class="card">
+            <div class="body">
+                <div class="board">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery Core Js -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="plugins/node-waves/waves.js"></script>
+    <script>
+
+        function render(){
+            $.ajax({
+                url:'./api/boxes',
+                type:'GET',
+                success:function(d){
+                    $('.board').html(d);
+                }
+            });
+        }
+
+        $( document ).ready(function() {
+
+            render();
+        });
+
+
+
+        function cellClicked(buttonId){
+            console.log('Human check');
+            $.ajax({
+                url:'./api/player/check/'+buttonId,
+                type:'GET',
+                success:function(){
+                    render();
+                    console.log('AI thinking . . .')
+                    setTimeout(moveAi, 1000);
+                }
+            });
+        }
+		
+		function moveAi(){
+            console.log('AI turn');
+            $.ajax({
+                url:'./api/ai/check/',
+                type:'GET',
+                success:function(){
+                    console.log('AI check');
+                    render();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
