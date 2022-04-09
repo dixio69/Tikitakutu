@@ -58,14 +58,24 @@ public class ApiController {
                 stringBuilder.append("<td><a id=\"" + buttonId + "\"");
                 if (cell.getValue() == null) {
                     stringBuilder.append("onclick=\"cellClicked('" + buttonId + "')\" ");
-                    stringBuilder.append("class=\"btn\">&nbsp;&nbsp;&nbsp;");
+                    stringBuilder.append("class=\"u-btn u-btn-round u-button-style u-radius-5 u-btn-3\">&nbsp; &nbsp; &nbsp;&nbsp;");
                 } else {
                     stringBuilder.append(cell.getValue() != null ? "disabled=\"disabled\"" : "");
                     if (cell.getValue())
-                        stringBuilder.append("class=\"btn btn-danger\">X");
+                        stringBuilder.append("class=\"u-btn u-btn-round u-button-style u-radius-5 u-btn-1\"><span class=\"u-file-icon u-icon u-icon-1\"><img src=\"images/1828527.png\" alt=\"\"></span>&nbsp;");
                     else if (!cell.getValue())
-                        stringBuilder.append("class=\"btn btn-success\">O");
+                        stringBuilder.append("class=\"u-btn u-btn-round u-button-style u-radius-5 u-btn-2\"><span class=\"u-file-icon u-icon u-icon-2\"><img src=\"images/5241009.png\" alt=\"\"></span>&nbsp;");
                 }
+//                if (cell.getValue() == null) {
+//                    stringBuilder.append("onclick=\"cellClicked('" + buttonId + "')\" ");
+//                    stringBuilder.append("class=\"button-secondary pure-button\">&nbsp;");
+//                } else {
+//                    stringBuilder.append(cell.getValue() != null ? "disabled=\"disabled\"" : "");
+//                    if (cell.getValue())
+//                        stringBuilder.append("class=\"button-xsmall button-error pure-button\">X");
+//                    else if (!cell.getValue())
+//                        stringBuilder.append("class=\"button-xsmall button-success pure-button\">O");
+//                }
 
                 stringBuilder.append("</a></td>");
             }

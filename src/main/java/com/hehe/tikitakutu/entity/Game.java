@@ -13,8 +13,8 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Game extends BaseEntity {
-    private int gridSize;
-    private int winCondition;
+    private int gridSize = 3;
+    private int winCondition = 3;
     private Boolean winner;
     private boolean isFinished = false;
 }

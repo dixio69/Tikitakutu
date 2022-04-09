@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tikitakutu</title>
     <!-- Favicon-->
     <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
@@ -12,19 +12,11 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet"
           type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
-
-    <!-- Bootstrap Core Css -->
-    <link th:href="@{/plugins/bootstrap/css/bootstrap.css}" rel="stylesheet">
-
-    <!-- Waves Effect Css -->
-    <link th:href="@{/plugins/node-waves/waves.css}" rel="stylesheet"/>
-
-    <!-- Animation Css -->
-    <link th:href="@{/plugins/animate-css/animate.css}" rel="stylesheet"/>
-
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/grids-responsive-min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <!-- Custom Css -->
-    <link th:href="@{/css/style.css}" rel="stylesheet">
-    <link th:href="@{/css/materialize.css}" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
     <style>
       table {
         border-collapse: collapse;
@@ -52,14 +44,15 @@
         text-align: center;
         font-size: 15px;
      }
-
-
-
+     .board {
+        justify-content: center;
+     }
     </style>
 </head>
 
-<body class="signup-page">
-<div class="signup-box">
+<body>
+<div class="splash-container">
+<div class="splash">
     <div class="logo">
         <a href="javascript:void(0);"><b>TIKITAKUTU</b></a>
         <small>a Tic Tac Toe game</small>
@@ -67,22 +60,50 @@
         <h1 id="awin" style="display:none">Ai is Winner !</h1>
         <h1 id="tied" style="display:none">Game Tied</h1>
     </div>
-    <div class="card">
-        <div class="body">
-            <div class="board">
-            </div>
+    <div class="splash-head">
+        <style scoped="">
+            .button-success,
+            .button-error,
+            .button-warning,
+            .button-xsmall {
+                font-size: 70%;
+            }
+            .button-success {
+                background: rgb(28, 184, 65);
+                /* this is a green */
+            }
+
+            .button-error {
+                background: rgb(202, 60, 60);
+                /* this is a maroon */
+            }
+
+            .button-warning {
+                background: rgb(223, 117, 20);
+                /* this is an orange */
+            }
+
+            .button-secondary {
+                background: rgb(66, 184, 221);
+                /* this is a light blue */
+            }
+        </style>
+<!--        <button class="button-success pure-button">Success Button</button>-->
+<!--        <button class="button-error pure-button">Error Button</button>-->
+<!--        <button class="button-warning pure-button">Warning Button</button>-->
+<!--        <button class="button-secondary pure-button">Secondary Button</button>-->
+        <div class="board">
         </div>
     </div>
+</div>
+<div class="footer l-box is-center">
+    made by dixio69 | css by purecss.io
+</div>
+
 </div>
 
 <!-- Jquery Core Js -->
 <script th:src="@{/plugins/jquery/jquery.min.js}"></script>
-
-<!-- Bootstrap Core Js -->
-<script th:src="@{/plugins/bootstrap/js/bootstrap.js}"></script>
-
-<!-- Waves Effect Plugin Js -->
-<script th:src="@{/plugins/node-waves/waves.js}"></script>
 <script>
         let canPlayerMove;
         let gameOver = false;
@@ -156,9 +177,6 @@
                 });
 		    }
         }
-
-
-
 </script>
 </body>
 </html>

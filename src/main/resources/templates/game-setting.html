@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Tikitakatu, You Win !, Computer Win !, Game Tie !">
+    <meta name="description" content="">
+    <meta name="page_type" content="np-template-header-footer-from-plugin">
+    <title>Tikitakutu</title>
+    <!-- Favicon-->
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/nicepage.css}" media="screen">
+    <link rel="stylesheet" th:href="@{/css/game-setting.css}" media="screen">
+    <script class="u-script" type="text/javascript" th:src="@{/js/jquery.js}" defer=""></script>
+    <script class="u-script" type="text/javascript" th:src="@{js/nicepage.js}" defer=""></script>
+    <meta name="generator" content="Nicepage 4.8.2, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+    
+    
+    
+    
+    
+    <script type="application/ld+json">{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": ""
+}</script>
+    <meta name="theme-color" content="#478ac9">
+    <meta property="og:title" content="game-setting">
+    <meta property="og:type" content="website">
+  </head>
+  <body class="u-black u-body u-xl-mode">
+    <section class="u-align-center u-clearfix u-section-1" id="sec-1718">
+      <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+        <h1 class="u-text u-text-default u-text-1">Tikitakatu</h1>
+        <p class="u-text u-text-2">a simple Tic Tac Toe game</p>
+      </div>
+    </section>
+    <section class="u-clearfix u-grey-10 u-section-2" id="sec-1926">
+      <div class="u-clearfix u-sheet u-sheet-1"></div>
+    </section>
+    <section class="u-align-center u-clearfix u-section-3" id="carousel_86e7">
+      <div class="u-align-left u-clearfix u-sheet u-sheet-1">
+        <div class="u-align-center u-form u-form-1">
+          <form th:action="@{/}" method="POST" th:object="${data}" class="u-clearfix u-form-spacing-10 u-form-vertical u-inner-form" source="custom" name="form" style="padding: 10px;">
+            <div class="u-form-group u-form-name u-label-left">
+              <label for="name-4484" class="u-label">Size</label>
+              <input type="number" min="3" max="10" placeholder="3 - 10" id="name-4484" name="name" th:field="*{size}" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="required">
+            </div>
+            <div class="u-form-email u-form-group u-label-left">
+              <label for="email-4484" class="u-label">Winning Condition</label>
+              <input type="number" min="3" max="10"  placeholder="Min 3, Max equals size" id="email-4484" name="email" th:field="*{winning}" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="required">
+            </div>
+            <div class="u-form-group u-form-submit u-label-left">
+              <label class="u-label u-label-3"></label>
+              <input type="submit" value="submit" class="u-form-control-hidden">
+              <div class="u-align-center u-btn-submit-container">
+                <button onclick="play()" class="u-border-none u-btn u-btn-submit u-button-style u-palette-1-light-1 u-btn-1">Let's Play</button>
+              </div>
+            </div>
+            <input type="hidden" value="" name="recaptchaResponse">
+          </form>
+        </div>
+      </div>
+    </section>
+    <section class="u-clearfix u-grey-10 u-section-4" id="carousel_d0f9">
+      <div class="u-clearfix u-sheet u-sheet-1"></div>
+    </section>
+
+
+    <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-f86f">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <span class="u-small-text u-text u-text-variant u-text-1">created by dixio69 using
+          <a href="https://nicepage.com/website-templates" target="_blank">
+            <span>nicepage.com</span>
+          </a>
+        </span>
+      </div>
+    </footer>
+  </body>
+<script>
+  function play(){
+    let size = document.getElementById('name-4484').value;
+    let wc = document.getElementById('email-4484').value;
+    location.href = 'play?s=' + size + '&wc=' + wc;
+  }
+</script>
+</html>

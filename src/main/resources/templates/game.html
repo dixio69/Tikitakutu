@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Tikitakatu, You Win !, Computer Win !, Game Tie !">
+    <meta name="description" content="">
+    <meta name="page_type" content="np-template-header-footer-from-plugin">
+
+    <title>Tikitakutu</title>
+    <!-- Favicon-->
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/nicepage.css}" media="screen">
+    <link rel="stylesheet" th:href="@{/css/Page-2.css}" media="screen">
+    <script class="u-script" type="text/javascript" th:src="@{/js/jquery.js}" defer=""></script>
+    <script class="u-script" type="text/javascript" th:src="@{js/nicepage.js}" defer=""></script>
+    <meta name="generator" content="Nicepage 4.8.2, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+    
+    
+    
+    
+    
+    
+    <script type="application/ld+json">{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": ""
+}</script>
+    <meta name="theme-color" content="#478ac9">
+    <meta property="og:title" content="Page 2">
+    <meta property="og:type" content="website">
+  </head>
+  <body class="u-black u-body u-xl-mode">
+    <section class="u-align-center u-clearfix u-section-1" id="sec-1718">
+      <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+        <h1 class="u-text u-text-default u-text-1">Tikitakatu</h1>
+        <p class="u-text u-text-2">a simple Tic Tac Toe game</p>
+      </div>
+    </section>
+    <section class="u-clearfix u-grey-10 u-section-2" id="sec-1926">
+      <div class="u-clearfix u-sheet u-sheet-1"></div>
+    </section>
+    <section class="u-align-center u-clearfix u-section-3" id="carousel_86e7">
+      <div class="u-align-left u-clearfix u-sheet u-sheet-1 board">
+        <a class="u-btn u-btn-round u-button-style u-radius-5 u-btn-1"><span class="u-file-icon u-icon u-icon-1"><img src="images/1828527.png" alt=""></span>&nbsp;
+        </a>
+        <a class="u-btn u-btn-round u-button-style u-radius-5 u-btn-2"><span class="u-file-icon u-icon u-icon-2"><img src="images/5241009.png" alt=""></span>&nbsp;
+        </a>
+        <a class="u-btn u-btn-round u-button-style u-radius-5 u-btn-3">&nbsp; &nbsp; &nbsp;&nbsp;</a>
+      </div>
+    </section>
+    <section class="u-clearfix u-grey-10 u-section-4" id="carousel_d0f9">
+      <div class="u-clearfix u-sheet u-sheet-1"></div>
+    </section>
+    <section class="u-align-center u-clearfix u-section-5" id="carousel_d372">
+      <div class="u-clearfix u-sheet u-sheet-1" style="display:none" id="endGame">
+        <h1 class="u-text u-text-default u-text-1" id="huwin" style="display:none">You Win !</h1>
+        <h1 class="u-text u-text-default u-text-2" id="awin" style="display:none">Computer Win !</h1>
+        <h1 class="u-text u-text-default u-text-3" id="tied" style="display:none">Game Tie !</h1>
+        <a class="u-border-none u-btn u-btn-round u-button-style u-radius-5 u-text-body-color u-white u-btn-1" onClick="window.location.reload(true)">Restart</a>
+        <a class="u-border-none u-btn u-btn-round u-button-style u-radius-5 u-white u-btn-2" href="/">Back to Setting</a>
+      </div>
+    </section>
+    
+    
+    <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-f86f">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <span class="u-small-text u-text u-text-variant u-text-1">created by dixio69 using
+          <a href="https://nicepage.com/website-templates" target="_blank">
+            <span>nicepage.com</span>
+          </a>
+        </span>
+      </div>
+    </footer>
+  </body>
+  <script th:src="@{/plugins/jquery/jquery.min.js}"></script>
+  <script>
+        let canPlayerMove;
+        let gameOver = false;
+        function render(){
+            $.ajax({
+                url:'/api/grid',
+                type:'GET',
+                success:function(d){
+                    $('.board').html(d);
+                    checkStatus();
+                }
+            });
+        }
+
+        function checkStatus(){
+            $.ajax({
+                url:'/api/status',
+                type:'GET',
+                success:function(d){
+                    console.log('status : ');
+                    console.log(d);
+                    if(d.winner == true){
+                        document.getElementById('huwin').style.display = 'block';
+                    }else if(d.winner == false){
+                        document.getElementById('awin').style.display = 'block';
+                    }
+
+                    if(d.finished == true && d.winner == null){
+                        document.getElementById('tied').style.display='block';
+                    }
+
+                    gameOver = d.winner != null || d.finished == true;
+                    if(gameOver){
+                      document.getElementById('endGame').style.display='block';
+                    }
+                }
+            });
+        }
+
+        $( document ).ready(function() {
+            render();
+            canPlayerMove = true;
+        });
+
+
+
+        function cellClicked(buttonId){
+            if(canPlayerMove && !gameOver){
+                console.log('Human check');
+                canPlayerMove = false;
+                $.ajax({
+                    url:'/api/player/check/'+buttonId,
+                    type:'GET',
+                    success:function(){
+                        render();
+                        console.log('AI thinking . . .')
+                        setTimeout(moveAi, 1000);
+                    }
+                });
+            }
+        }
+
+		function moveAi(){
+		    if(!gameOver){
+                console.log('AI turn');
+                $.ajax({
+                    url:'/api/ai/check/',
+                    type:'GET',
+                    success:function(){
+                        console.log('AI check');
+                        render();
+                        canPlayerMove = true;
+                    }
+                });
+		    }
+        }
+  </script>
+</html>
