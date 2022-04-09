@@ -4,8 +4,10 @@ import com.hehe.tikitakutu.dto.Ai;
 import com.hehe.tikitakutu.dto.Human;
 import com.hehe.tikitakutu.dto.Player;
 import com.hehe.tikitakutu.entity.Cell;
+import com.hehe.tikitakutu.entity.Game;
 import com.hehe.tikitakutu.repository.CellRepository;
 import com.hehe.tikitakutu.repository.SettingRepository;
+import com.hehe.tikitakutu.service.score.*;
 import com.hehe.tikitakutu.util.NumberUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,7 @@ public class BoardService {
         }
     }
 
-    public void checkRandom(String sessionId){
+    public void checkRandom(String sessionId) {
         List<Cell> availableCell = getCellsBySessionId(sessionId).stream()
                 .filter(d -> d.getValue() == null).collect(Collectors.toList());
         if (availableCell.size() > 0) {
@@ -55,4 +57,19 @@ public class BoardService {
             changeCellValue(sessionId, cell.getLocation_x(), cell.getLocation_y(), new Ai());
         }
     }
+
+    public void calculateWin(String sessionId) {
+        List<Cell> cells = getCellsBySessionId(sessionId);
+        Game setting = settingRepository.findBySessionId(sessionId);
+
+        ScoreProcessor scoreProcessor = new HorizontalScoreProcessor(cells, setting, settingRepository);
+        scoreProcessor.calculateGameStatus();
+        scoreProcessor = new VerticalScoreProcessor(cells, setting, settingRepository);
+        scoreProcessor.calculateGameStatus();
+        scoreProcessor = new DiagonalScoreProcessor(cells, setting, settingRepository);
+        scoreProcessor.calculateGameStatus();
+        scoreProcessor = new OppositeDiagonalScoreProcessor(cells, setting, settingRepository);
+        scoreProcessor.calculateGameStatus();
+    }
+
 }

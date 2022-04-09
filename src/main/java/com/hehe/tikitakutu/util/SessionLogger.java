@@ -7,6 +7,6 @@ import javax.servlet.http.HttpSession;
 @Log4j2
 public class SessionLogger {
     public static void logSession(HttpSession session){
-        log.info("Receive request | path [" + session.getServletContext().getContextPath() + "] | session id = " + session.getId());
+//        log.info("Receive request | path [" + session.getServletContext().getContextPath() + "] | session id = " + session.getId());
     }
 }

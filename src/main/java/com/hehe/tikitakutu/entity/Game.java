@@ -12,6 +12,9 @@ import javax.persistence.Entity;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameSetting extends BaseEntity {
+public class Game extends BaseEntity {
     private int gridSize;
+    private int winCondition;
+    private Boolean winner;
+    private boolean isFinished = false;
 }

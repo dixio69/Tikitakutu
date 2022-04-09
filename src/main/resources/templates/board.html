@@ -1,29 +1,30 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>Tikitakutu</title>
     <!-- Favicon-->
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet"
+          type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core Css -->
-    <link href="plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link th:href="@{/plugins/bootstrap/css/bootstrap.css}" rel="stylesheet">
 
     <!-- Waves Effect Css -->
-    <link href="plugins/node-waves/waves.css" rel="stylesheet" />
+    <link th:href="@{/plugins/node-waves/waves.css}" rel="stylesheet"/>
 
     <!-- Animation Css -->
-    <link href="plugins/animate-css/animate.css" rel="stylesheet" />
+    <link th:href="@{/plugins/animate-css/animate.css}" rel="stylesheet"/>
 
     <!-- Custom Css -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/materialize.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/materialize.css}" rel="stylesheet">
     <style>
       table {
         border-collapse: collapse;
@@ -51,74 +52,113 @@
         text-align: center;
         font-size: 15px;
      }
+
+
+
     </style>
 </head>
 
 <body class="signup-page">
-    <div class="signup-box">
-        <div class="logo">
-            <a href="javascript:void(0);"><b>TIKITAKUTU</b></a>
-            <small>a Tic Tac Toe game</small>
-        </div>
-        <div class="card">
-            <div class="body">
-                <div class="board">
-                </div>
+<div class="signup-box">
+    <div class="logo">
+        <a href="javascript:void(0);"><b>TIKITAKUTU</b></a>
+        <small>a Tic Tac Toe game</small>
+        <h1 id="huwin" style="display:none">Human is winner !</h1>
+        <h1 id="awin" style="display:none">Ai is Winner !</h1>
+        <h1 id="tied" style="display:none">Game Tied</h1>
+    </div>
+    <div class="card">
+        <div class="body">
+            <div class="board">
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Jquery Core Js -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+<!-- Jquery Core Js -->
+<script th:src="@{/plugins/jquery/jquery.min.js}"></script>
 
-    <!-- Bootstrap Core Js -->
-    <script src="plugins/bootstrap/js/bootstrap.js"></script>
+<!-- Bootstrap Core Js -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.js}"></script>
 
-    <!-- Waves Effect Plugin Js -->
-    <script src="plugins/node-waves/waves.js"></script>
-    <script>
-
+<!-- Waves Effect Plugin Js -->
+<script th:src="@{/plugins/node-waves/waves.js}"></script>
+<script>
+        let canPlayerMove;
+        let gameOver = false;
         function render(){
             $.ajax({
-                url:'./api/boxes',
+                url:'/api/grid',
                 type:'GET',
                 success:function(d){
                     $('.board').html(d);
+                    checkStatus();
+                }
+            });
+        }
+
+        function checkStatus(){
+            $.ajax({
+                url:'/api/status',
+                type:'GET',
+                success:function(d){
+                    console.log('status : ');
+                    console.log(d);
+                    if(d.winner == true){
+                        document.getElementById('huwin').style.display = 'block';
+                    }else if(d.winner == false){
+                        document.getElementById('awin').style.display = 'block';
+                    }
+
+                    if(d.finished == true && d.winner == null){
+                        document.getElementById('tied').style.display='block';
+                    }
+
+                    gameOver = d.winner != null || d.finished == true;
                 }
             });
         }
 
         $( document ).ready(function() {
-
             render();
+            canPlayerMove = true;
         });
 
 
 
         function cellClicked(buttonId){
-            console.log('Human check');
-            $.ajax({
-                url:'./api/player/check/'+buttonId,
-                type:'GET',
-                success:function(){
-                    render();
-                    console.log('AI thinking . . .')
-                    setTimeout(moveAi, 1000);
-                }
-            });
+            if(canPlayerMove && !gameOver){
+                console.log('Human check');
+                canPlayerMove = false;
+                $.ajax({
+                    url:'/api/player/check/'+buttonId,
+                    type:'GET',
+                    success:function(){
+                        render();
+                        console.log('AI thinking . . .')
+                        setTimeout(moveAi, 1000);
+                    }
+                });
+            }
         }
 		
 		function moveAi(){
-            console.log('AI turn');
-            $.ajax({
-                url:'./api/ai/check/',
-                type:'GET',
-                success:function(){
-                    console.log('AI check');
-                    render();
-                }
-            });
+		    if(!gameOver){
+                console.log('AI turn');
+                $.ajax({
+                    url:'/api/ai/check/',
+                    type:'GET',
+                    success:function(){
+                        console.log('AI check');
+                        render();
+                        canPlayerMove = true;
+                    }
+                });
+		    }
         }
-    </script>
+
+
+
+</script>
 </body>
 </html>

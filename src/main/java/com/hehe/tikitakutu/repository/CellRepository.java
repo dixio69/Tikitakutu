@@ -1,7 +1,6 @@
 package com.hehe.tikitakutu.repository;
 
 import com.hehe.tikitakutu.entity.Cell;
-import com.hehe.tikitakutu.entity.GameSetting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

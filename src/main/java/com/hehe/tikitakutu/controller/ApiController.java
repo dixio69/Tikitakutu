@@ -1,15 +1,14 @@
 package com.hehe.tikitakutu.controller;
 
+import com.hehe.tikitakutu.dto.GameStatus;
 import com.hehe.tikitakutu.entity.Cell;
+import com.hehe.tikitakutu.entity.Game;
 import com.hehe.tikitakutu.service.BoardService;
 import com.hehe.tikitakutu.service.GameControlService;
 import com.hehe.tikitakutu.util.SessionLogger;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,11 +22,6 @@ public class ApiController {
     @Autowired
     private BoardService boardService;
 
-    @GetMapping("/size")
-    public Integer getSize(HttpSession httpSession) {
-        return gameControlService.get(httpSession.getId()).getGridSize();
-    }
-
     @GetMapping("/player/check/{button-id}")
     public void playerCheckCell(@PathVariable(value = "button-id") String buttonId, HttpSession session) {
         boardService.playerCheckCell(buttonId, session.getId());
@@ -38,7 +32,16 @@ public class ApiController {
         boardService.checkRandom(session.getId());
     }
 
-    @GetMapping("/boxes")
+    @GetMapping("/status")
+    public @ResponseBody GameStatus getGameStatus(HttpSession session) {
+        Game game = gameControlService.get(session.getId());
+        return GameStatus.builder()
+                .isFinished(game.isFinished())
+                .winner(game.getWinner())
+                .build();
+    }
+
+    @GetMapping("/grid")
     public String getBoxesHtml(HttpSession session) {
         SessionLogger.logSession(session);
         Integer gridSize = gameControlService.get(session.getId()).getGridSize();
@@ -69,6 +72,7 @@ public class ApiController {
             stringBuilder.append("</tr>");
         }
         stringBuilder.append("</table>");
+        boardService.calculateWin(session.getId());
         return stringBuilder.toString();
     }
 }

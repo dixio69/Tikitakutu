@@ -1,11 +1,9 @@
 package com.hehe.tikitakutu.service;
 
-import com.hehe.tikitakutu.dto.CellLocation;
 import com.hehe.tikitakutu.entity.Cell;
-import com.hehe.tikitakutu.entity.GameSetting;
+import com.hehe.tikitakutu.entity.Game;
 import com.hehe.tikitakutu.repository.CellRepository;
 import com.hehe.tikitakutu.repository.SettingRepository;
-import com.hehe.tikitakutu.util.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,56 +16,55 @@ public class GameControlService {
     private CellRepository cellRepository;
 
     @Transactional
-    public void play(GameSetting gameSetting) {
-        GameSetting gameSettingExisting = settingRepository.findBySessionId(gameSetting.getSessionId());
-        if (gameSettingExisting == null) {
-            gameSettingExisting = new GameSetting();
+    public void play(Game game) {
+        Game gameExisting = settingRepository.findBySessionId(game.getSessionId());
+        if (gameExisting == null) {
+            gameExisting = new Game();
         }
-        gameSettingExisting.setGridSize(gameSetting.getGridSize());
-        gameSettingExisting.setSessionId(gameSetting.getSessionId());
-        gameSettingExisting = settingRepository.save(gameSettingExisting);
+        game.setId(gameExisting.getId());
+        gameExisting = settingRepository.save(game);
 
-        cellRepository.deleteBySessionId(gameSetting.getSessionId());
+        cellRepository.deleteBySessionId(game.getSessionId());
 
         Cell cell;
-        for (int x = 1; x <= gameSettingExisting.getGridSize(); x++) {
-            for (int y = 1; y <= gameSettingExisting.getGridSize(); y++) {
+        for (int x = 1; x <= gameExisting.getGridSize(); x++) {
+            for (int y = 1; y <= gameExisting.getGridSize(); y++) {
                 cell = Cell.builder()
                         .location_x(x)
                         .location_y(y)
                         .build();
-                cell.setSessionId(gameSettingExisting.getSessionId());
+                cell.setSessionId(gameExisting.getSessionId());
                 cellRepository.save(cell);
             }
         }
     }
 
     @Transactional
-    public void reset(GameSetting gameSetting) {
-        GameSetting gameSettingExisting = settingRepository.findBySessionId(gameSetting.getSessionId());
-        if (gameSettingExisting == null) {
-            gameSettingExisting = new GameSetting();
+    public void reset(Game game) {
+        Game gameExisting = settingRepository.findBySessionId(game.getSessionId());
+        if (gameExisting == null) {
+            gameExisting = new Game();
         }
-        gameSettingExisting.setGridSize(gameSetting.getGridSize());
-        gameSettingExisting.setSessionId(gameSetting.getSessionId());
-        gameSettingExisting = settingRepository.save(gameSettingExisting);
+        gameExisting.setGridSize(game.getGridSize());
+        gameExisting.setSessionId(game.getSessionId());
+        gameExisting = settingRepository.save(gameExisting);
 
-        cellRepository.deleteBySessionId(gameSetting.getSessionId());
+        cellRepository.deleteBySessionId(game.getSessionId());
 
         Cell cell;
-        for (int x = 1; x <= gameSettingExisting.getGridSize(); x++) {
-            for (int y = 1; y <= gameSettingExisting.getGridSize(); y++) {
+        for (int x = 1; x <= gameExisting.getGridSize(); x++) {
+            for (int y = 1; y <= gameExisting.getGridSize(); y++) {
                 cell = Cell.builder()
                         .location_x(x)
                         .location_y(y)
                         .build();
-                cell.setSessionId(gameSettingExisting.getSessionId());
+                cell.setSessionId(gameExisting.getSessionId());
                 cellRepository.save(cell);
             }
         }
     }
 
-    public GameSetting get(String sessionId) {
+    public Game get(String sessionId) {
         return settingRepository.findBySessionId(sessionId);
     }
 }
