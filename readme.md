@@ -1,7 +1,7 @@
 # how to run
 ### from source
 using maven command
-`spring-boot:run`
+`mvn spring-boot:run`
 
 
 ### from war file
